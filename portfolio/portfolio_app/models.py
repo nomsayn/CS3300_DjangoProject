@@ -11,11 +11,36 @@ class Portfolio(models.Model):
     def __str__(self):
         return self.title
 
-    # Returns the URL to access a particular instance of MyModelName.
-    # if you define this method then Django will automatically
-    # add a "View on Site" button to the model's record editing screens in the Admin site
     def get_absolute_url(self):
         return reverse('portfolio-detail', args=[str(self.id)])
+    
+class Project(models.Model):
+    
+    title = models.CharField(max_length = 200, blank = False)
+    description = models.TextField(blank = False)
+    portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE, default = None)
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('project-detail', args=[str(self.id)])
+
+# Model to represent the relationship between projects and portfolios.
+# Each instance of this model will have a reference to a Portfolio and a Project,
+# creating a many-to-many relationship between portfolios and projects.
+class ProjectsInPortfolio(models.Model):
+
+    #deleting a portfolio will delete associate projects
+    portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
+    #deleting a project will not affect the portfolio
+    #Just the entry will be removed from this table
+    project = models.OneToOneField(Project, on_delete=models.CASCADE)
+
+    class Meta:
+        #ensures that each project is associated with only one portfolio
+        unique_together = ['portfolio', 'project']
+
 
 class Student(models.Model):
 
