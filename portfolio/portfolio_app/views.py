@@ -5,5 +5,3 @@ from django.http import HttpResponse
 def index(request):
 # Render the HTML template index.html with the data in the context variable.
    return render( request, 'portfolio_app/index.html')
-
-
