@@ -1,0 +1,18 @@
+{% extends 'portfolio_app/base_template.html' %}
+
+{% block content %}
+    <h2>Confirm Project Deletion</h2><br>           <!-- &nbsp; are non breakable spaces-->
+    <p>Are you sure you want to delete the project: &nbsp; <strong>{{ project.title }}</strong></p><br>
+
+    <!-- Using a form allows using a POST request to the URL for handeling the deletion-->
+    <form method="post" action="{% url 'delete_project' project.pk %}">
+        {% csrf_token %}
+        &nbsp;&nbsp; <!-- &nbsp; are non breakable spaces-->
+
+        <!-- Cancel button to return to previous portfolio detail view -->
+        <a class="btn btn-primary" href="{% url 'portfolio-detail' project.portfolio.id %}" role="button">Cancel</a>
+        
+        <!-- Following will create a default form button to delete to project -->
+        &nbsp;<input type="submit" value="Delete"> &nbsp;
+    </form>
+{% endblock %}
